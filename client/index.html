@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NexGen 5G Transparency Auditor</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?
+family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-
+awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- LANDING PAGE -->
+    <div class="landing-page" id="landingPage">
+      <div class="landing-container">
+        <div class="landing-content">
+          <div class="landing-logo">
+            <span class="logo-icon"><i class="fas fa-broadcast-tower"></i></span>
+            <span class="logo-text">NexGen<span class="accent">5G</span></span>
+          </div>
+          <h1 class="landing-title">5G Network Intelligence at Your Fingertips</h1>
+          <p class="landing-subtitle">Monitor your network coverage, track data usage, and optimize your mobile experience with real-time transparency.</p>
+
+          <div class="landing-features">
+            <div class="feature">
+              <div class="feature-icon"><i class="fas fa-signal"></i></div>
+              <div class="feature-text">
+                <h3>Live Network Monitoring</h3>
+                <p>Real-time detection of 5G and 4G coverage transitions</p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div>
+              <div class="feature-text">
+                <h3>Coverage Map</h3>
+                <p>Global view of 5G zones and 4G fallback areas</p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+              <div class="feature-text">
+                <h3>Usage Analytics</h3>
+                <p>Detailed tracking of your data consumption</p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon"><i class="fas fa-bell"></i></div>
+              <div class="feature-text">
+                <h3>Smart Alerts</h3>
+                <p>Instant notifications for network changes</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="landing-cta">
+            <button class="btn-main" id="guestAccessBtn">Get Started as Guest</button>
+            <button class="btn-secondary" id="getStartedBtn">Sign In</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUTH MODAL -->
+    <div class="app-container hidden" id="appContainer">
+      <div class="auth-modal hidden" id="authModal">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="auth-logo">
+            <span class="logo-icon"
+              ><i class="fas fa-broadcast-tower"></i
+            ></span>
+            <span class="logo-text">NexGen<span class="accent">5G</span></span>
+          </div>
+        </div>
+
+        <form class="auth-form" id="authForm">
+          <div class="auth-title" id="authTitle">Sign In</div>
+          <div class="auth-subtitle">Access your NexGen 5G dashboard</div>
+
+          <!-- Email Input -->
+          <div class="form-group">
+            <label for="authEmail">Email Address</label>
+            <input
+              type="email"
+              id="authEmail"
+              class="auth-input"
+              placeholder="your@email.com"
+              required
+            />
+            <span class="auth-error" id="emailError"></span>
+          </div>
+
+          <!-- Password Input -->
+          <div class="form-group">
+            <label for="authPassword">Password</label>
+            <input
+              type="password"
+              id="authPassword"
+              class="auth-input"
+              placeholder="7-14 characters"
+              required
+            />
+            <span class="auth-hint">Must be 7-14 characters</span>
+            <span class="auth-error" id="passwordError"></span>
+          </div>
+
+          <!-- Error/Success Messages -->
+          <div class="auth-error" id="authError"></div>
+          <div class="auth-success" id="authSuccess"></div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="auth-btn" id="authSubmitBtn">
+            Sign In
+          </button>
+
+          <!-- Divider -->
+          <div class="auth-divider">
+            <span>or</span>
+          </div>
+
+          <!-- Guest Button -->
+          <button
+            type="button"
+            class="auth-btn auth-btn-secondary"
+            id="guestBtn"
+          >
+            Continue as Guest
+          </button>
+
+          <!-- Toggle Link -->
+          <div class="auth-toggle">
+            <span id="toggleText">Don't have an account?</span>
+            <a href="#" id="toggleLink">Sign Up</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <span class="logo-icon"><i class="fas fa-broadcast-tower"></i></span>
+        <span class="logo-text">NexGen<span class="accent">5G</span></span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-section="dashboard">
+          <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-section="map">
+          <i class="fas fa-map-marked-alt"></i><span>Signal Map</span>
+        </a>
+        <a href="#" class="nav-item" data-section="usage">
+          <i class="fas fa-chart-bar"></i><span>Usage History</span>
+        </a>
+        <a href="#" class="nav-item" data-section="alerts">
+          <i class="fas fa-bell"></i><span>Alerts</span>
+          <span class="badge" id="alertBadge">0</span>
+        </a>
+        <a href="#" class="nav-item" data-section="plans">
+          <i class="fas fa-sim-card"></i><span>Plan Advisor</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar"><i class="fas fa-user-astronaut"></i></div>
+          <div class="user-info">
+            <span class="user-name" id="userName">Demo User</span>
+            <span class="user-plan" id="userStatus">Unlimited 5G Plan</span>
+          </div>
+          <button class="user-logout" id="logoutBtn" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <!-- TOP BAR -->
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="topbar-title" id="pageTitle">Dashboard</div>
+        <div class="topbar-right">
+          <div class="signal-pill" id="signalPill">
+            <span class="pulse-dot" id="pulseDot"></span>
+            <span id="signalLabel">Detecting...</span>
+          </div>
+          <div class="clock" id="clock"></div>
+        </div>
+      </header>
+      <!-- TOAST ALERT -->
+      <div class="toast" id="toast"></div>
+      <!-- ===== DASHBOARD SECTION ===== -->
+      <section class="section active" id="sec-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card glow-blue">
+            <div class="stat-icon"><i class="fas fa-signal"></i></div>
+            <div class="stat-body">
+              <div class="stat-label">Current Network</div>
+              <div class="stat-value" id="currentNetwork">--</div>
+            </div>
+          </div>
+          <div class="stat-card glow-green">
+            <div class="stat-icon"><i class="fas fa-infinity"></i></div>
+            <div class="stat-body">
+              <div class="stat-label">5G Data Used (Free)</div>
+              <div class="stat-value" id="total5g">0 MB</div>
+            </div>
+          </div>
+          <div class="stat-card glow-orange">
+            <div class="stat-icon"><i class="fas fa-database"></i></div>
+            <div class="stat-body">
+              <div class="stat-label">4G Quota Used</div>
+              <div class="stat-value" id="total4g">0 MB</div>
+            </div>
+          </div>
+          <div class="stat-card glow-red">
+            <div class="stat-icon"><i class="fas fa-shield-alt"></i></div>
+            <div class="stat-body">
+              <div class="stat-label">Quota Remaining</div>
+
+              <div class="stat-value" id="quotaLeft">1500 MB</div>
+            </div>
+          </div>
+        </div>
+        <!-- Quota Bar -->
+        <div class="card quota-card">
+          <div class="card-header">
+            <span
+              ><i class="fas fa-tachometer-alt"></i> Daily 4G Quota Guard</span
+            >
+            <span id="quotaPercent">0%</span>
+          </div>
+          <div class="quota-bar-bg">
+            <div class="quota-bar-fill" id="quotaFill"></div>
+          </div>
+          <div class="quota-labels">
+            <span>0 MB</span><span>750 MB</span><span>1500 MB</span>
+          </div>
+        </div>
+        <!-- Live Event Feed -->
+        <div class="card">
+          <div class="card-header">
+            <span><i class="fas fa-rss"></i> Live Network Event Feed</span>
+          </div>
+          <div class="event-feed" id="eventFeed">
+            <div class="feed-empty">Waiting for network events...</div>
+          </div>
+        </div>
+      </section>
+      <!-- ===== MAP SECTION ===== -->
+      <section class="section" id="sec-map">
+        <div class="card map-card">
+          <div class="card-header">
+            <span
+              ><i class="fas fa-map-marked-alt"></i> Global Signal Coverage
+              Map</span
+            >
+            <div class="map-legend">
+              <span class="legend-dot dot-5g"></span>5G Zone
+              <span class="legend-dot dot-4g"></span>4G Zone
+              <span class="legend-dot dot-you"></span>You
+            </div>
+          </div>
+          <div id="map"></div>
+          <div class="map-info-bar" id="mapInfoBar">
+            <i class="fas fa-location-crosshairs"></i> Fetching your location...
+          </div>
+        </div>
+      </section>
+      <!-- ===== USAGE HISTORY SECTION ===== -->
+      <section class="section" id="sec-usage">
+        <div class="card">
+          <div class="card-header">
+            <span
+              ><i class="fas fa-chart-line"></i> Usage History (Last 10
+              Events)</span
+            >
+          </div>
+          <div class="table-wrap">
+            <table class="usage-table" id="usageTable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Time</th>
+                  <th>Network</th>
+                  <th>Activity (Simulated)</th>
+                  <th>Data (MB)</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="usageTbody">
+                <tr>
+                  <td colspan="7" class="empty-row">No history yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span><i class="fas fa-chart-pie"></i> Session Summary</span>
+          </div>
+          <div class="summary-grid" id="summaryGrid">
+            <div class="summary-item">
+              <span class="sum-label">Total Events</span>
+              <span class="sum-val" id="sumEvents">0</span>
+            </div>
+            <div class="summary-item">
+              <span class="sum-label">5G Events</span>
+              <span class="sum-val green" id="sum5gEvents">0</span>
+            </div>
+            <div class="summary-item">
+              <span class="sum-label">4G Events</span>
+              <span class="sum-val orange" id="sum4gEvents">0</span>
+            </div>
+            <div class="summary-item">
+              <span class="sum-label">Fallbacks</span>
+              <span class="sum-val red" id="sumFallbacks">0</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- ===== ALERTS SECTION ===== -->
+      <section class="section" id="sec-alerts">
+        <div class="card">
+          <div class="card-header">
+            <span><i class="fas fa-bell"></i> Alert Log</span>
+            <button class="btn-clear" id="clearAlerts">Clear All</button>
+          </div>
+          <div class="alert-list" id="alertList">
+            <div class="feed-empty">No alerts yet.</div>
+          </div>
+        </div>
+      </section>
+      <!-- ===== PLAN ADVISOR SECTION ===== -->
+      <section class="section" id="sec-plans">
+        <div class="card">
+          <div class="card-header">
+            <span><i class="fas fa-lightbulb"></i> Smart Plan Recommender</span>
+          </div>
+          <div class="plan-intro">
+            Based on your actual 5G availability and 4G usage, here are our
+            recommendations:
+          </div>
+          <div class="plan-grid" id="planGrid">
+            <div class="plan-card featured">
+              <div class="plan-badge">Recommended</div>
+              <div class="plan-name">Turbo 5G Max</div>
+              <div class="plan-price">₹599<span>/mo</span></div>
+              <ul class="plan-features">
+                <li><i class="fas fa-check"></i> Truly Unlimited 5G</li>
+                <li><i class="fas fa-check"></i> 3GB/day 4G fallback</li>
+                <li><i class="fas fa-check"></i> Priority network access</li>
+                <li><i class="fas fa-check"></i> 100 SMS/day</li>
+              </ul>
+              <button class="btn-plan">Explore Plan</button>
+            </div>
+            <div class="plan-card">
+              <div class="plan-name">Basic 5G</div>
+              <div class="plan-price">₹299<span>/mo</span></div>
+              <ul class="plan-features">
+                <li><i class="fas fa-check"></i> Unlimited 5G</li>
+                <li><i class="fas fa-check"></i> 1.5GB/day 4G</li>
+                <li><i class="fas fa-times dim"></i> Priority access</li>
+                <li><i class="fas fa-check"></i> 50 SMS/day</li>
+              </ul>
+              <button class="btn-plan outline">Explore Plan</button>
+            </div>
+            <div class="plan-card">
+              <div class="plan-name">Value 4G</div>
+              <div class="plan-price">₹199<span>/mo</span></div>
+              <ul class="plan-features">
+                <li><i class="fas fa-times dim"></i> No 5G</li>
+                <li><i class="fas fa-check"></i> 2GB/day 4G</li>
+                <li><i class="fas fa-times dim"></i> Priority access</li>
+                <li><i class="fas fa-check"></i> 100 SMS/day</li>
+              </ul>
+              <button class="btn-plan outline">Explore Plan</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

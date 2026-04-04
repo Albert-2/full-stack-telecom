@@ -1,0 +1,18 @@
+<div class="app-wrapper">
+  <!-- Landing Page -->
+  <app-landing-page
+    *ngIf="showLanding()"
+    (guestAccess)="onGuestAccess()"
+    (signIn)="onSignIn()"
+  ></app-landing-page>
+
+  <!-- Auth Modal -->
+  <app-auth-modal
+    *ngIf="showAuthModal()"
+    (authSuccess)="onAuthSuccess()"
+    (guestMode)="onGuestAccess()"
+  ></app-auth-modal>
+
+  <!-- Dashboard -->
+  <app-dashboard *ngIf="showDashboard()"></app-dashboard>
+</div>
