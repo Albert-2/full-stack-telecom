@@ -183,7 +183,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   onLogout() {
     this.authService.logout();
     this.networkService.stopSimulation();
-    window.location.href = '/';
+    // Clear localStorage and redirect to client landing page
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userEmail');
+    // Redirect to parent directory's index.html
+    window.location.href = '../index.html';
   }
 
   private updateClock() {
