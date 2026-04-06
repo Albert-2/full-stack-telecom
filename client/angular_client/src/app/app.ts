@@ -35,6 +35,7 @@ export class App implements OnInit {
     const user = this.appState.getCurrentUser();
     if (user && user.isAuthenticated) {
       this.showLanding.set(false);
+      this.showAuthModal.set(false);
     }
   }
 
