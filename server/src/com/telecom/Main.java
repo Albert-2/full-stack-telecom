@@ -1,5 +1,6 @@
 package com.telecom;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Main {
@@ -14,13 +15,21 @@ public class Main {
     static final String WHITE = "\u001B[37m";
     static final String BG_RED = "\u001B[41m";
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
 
         printBanner();
 
         // ── First-run setup (safe to call every run — idempotent) ──────────
         DBSetup.createTableIfAbsent();
         DBSetup.seedDataIfAbsent();
+
+        // ── Start REST API server ────────────────────────────────────────
+        try {
+            ApiServer.start();
+        } catch (IOException e) {
+            System.out.println(RED + "  Failed to start API server: " + e.getMessage() + RESET);
+            throw e;
+        }
 
         System.out.println();
         System.out.println(BOLD + CYAN + "  Starting roaming simulation..." + RESET);
